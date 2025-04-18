@@ -16,6 +16,10 @@ use TrendyolApi\TrendyolSpApi\Api\OrderApi;
 use TrendyolApi\TrendyolSpApi\Api\CategoryApi;
 use TrendyolApi\TrendyolSpApi\Api\BrandApi;
 use TrendyolApi\TrendyolSpApi\Api\SupplierAddressApi;
+use TrendyolApi\TrendyolSpApi\Api\ReturnApi;
+use TrendyolApi\TrendyolSpApi\Api\CustomerQuestionApi;
+use TrendyolApi\TrendyolSpApi\Api\ClaimApi;
+use TrendyolApi\TrendyolSpApi\Api\ShipmentProviderApi;
 use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
 use TrendyolApi\TrendyolSpApi\Support\RateLimiter;
 
@@ -55,6 +59,26 @@ class Trendyol
      * Tedarikçi Adresi API'si
      */
     protected ?SupplierAddressApi $supplier_address_api = null;
+    
+    /**
+     * İade API'si
+     */
+    protected ?ReturnApi $return_api = null;
+    
+    /**
+     * Müşteri Soruları API'si
+     */
+    protected ?CustomerQuestionApi $customer_question_api = null;
+    
+    /**
+     * Talep/Şikayet API'si
+     */
+    protected ?ClaimApi $claim_api = null;
+    
+    /**
+     * Kargo/Sevkiyat API'si
+     */
+    protected ?ShipmentProviderApi $shipment_provider_api = null;
 
     /**
      * Rate Limiter
@@ -216,6 +240,62 @@ class Trendyol
         }
         
         return $this->supplier_address_api;
+    }
+
+    /**
+     * ReturnApi örneğini döndürür.
+     *
+     * @return ReturnApi
+     */
+    public function returns(): ReturnApi
+    {
+        if ($this->return_api === null) {
+            $this->return_api = new ReturnApi($this->client, $this->config, $this->supplier_id);
+        }
+        
+        return $this->return_api;
+    }
+    
+    /**
+     * CustomerQuestionApi örneğini döndürür.
+     *
+     * @return CustomerQuestionApi
+     */
+    public function customerQuestions(): CustomerQuestionApi
+    {
+        if ($this->customer_question_api === null) {
+            $this->customer_question_api = new CustomerQuestionApi($this->client, $this->config, $this->supplier_id);
+        }
+        
+        return $this->customer_question_api;
+    }
+    
+    /**
+     * ClaimApi örneğini döndürür.
+     *
+     * @return ClaimApi
+     */
+    public function claims(): ClaimApi
+    {
+        if ($this->claim_api === null) {
+            $this->claim_api = new ClaimApi($this->client, $this->config, $this->supplier_id);
+        }
+        
+        return $this->claim_api;
+    }
+    
+    /**
+     * ShipmentProviderApi örneğini döndürür.
+     *
+     * @return ShipmentProviderApi
+     */
+    public function shipmentProviders(): ShipmentProviderApi
+    {
+        if ($this->shipment_provider_api === null) {
+            $this->shipment_provider_api = new ShipmentProviderApi($this->client, $this->config, $this->supplier_id);
+        }
+        
+        return $this->shipment_provider_api;
     }
 
     /**
