@@ -1,5 +1,5 @@
 {
-    "name": "serkan/trendyol-sp-api",
+    "name": "trendyol/trendyol-sp-api",
     "description": "Trendyol Marketplace API entegrasyonu için Laravel paketi",
     "keywords": [
         "laravel",
@@ -14,13 +14,13 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Serkan",
-            "email": "serkan@example.com"
+            "name": "TrendyolApi",
+            "email": "info@example.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Serkan\\TrendyolSpApi\\": "src/"
+            "TrendyolApi\\TrendyolSpApi\\": "src/"
         },
         "files": [
             "./helpers.php"
@@ -28,7 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Serkan\\TrendyolSpApi\\Tests\\": "tests"
+            "TrendyolApi\\TrendyolSpApi\\Tests\\": "tests"
         }
     },
     "require": {
@@ -50,10 +50,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Serkan\\TrendyolSpApi\\Providers\\TrendyolServiceProvider"
+                "TrendyolApi\\TrendyolSpApi\\Providers\\TrendyolServiceProvider"
             ],
             "aliases": {
-                "Trendyol": "Serkan\\TrendyolSpApi\\Facades\\Trendyol"
+                "Trendyol": "TrendyolApi\\TrendyolSpApi\\Facades\\Trendyol"
             }
         }
     },

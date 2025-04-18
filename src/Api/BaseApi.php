@@ -1,10 +1,10 @@
 <?php
 
-namespace Serkan\TrendyolSpApi\Api;
+namespace TrendyolApi\TrendyolSpApi\Api;
 
 use GuzzleHttp\Client;
 use Illuminate\Config\Repository;
-use Serkan\TrendyolSpApi\Exceptions\TrendyolApiException;
+use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
 
 abstract class BaseApi
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Serkan\TrendyolSpApi\Facades;
+namespace TrendyolApi\TrendyolSpApi\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Serkan\TrendyolSpApi\Api\ProductApi;
-use Serkan\TrendyolSpApi\Api\OrderApi;
-use Serkan\TrendyolSpApi\Api\CategoryApi;
-use Serkan\TrendyolSpApi\Api\BrandApi;
-use Serkan\TrendyolSpApi\Api\SupplierAddressApi;
+use TrendyolApi\TrendyolSpApi\Api\ProductApi;
+use TrendyolApi\TrendyolSpApi\Api\OrderApi;
+use TrendyolApi\TrendyolSpApi\Api\CategoryApi;
+use TrendyolApi\TrendyolSpApi\Api\BrandApi;
+use TrendyolApi\TrendyolSpApi\Api\SupplierAddressApi;
 
 /**
  * @method static ProductApi products()
@@ -17,7 +17,7 @@ use Serkan\TrendyolSpApi\Api\SupplierAddressApi;
  * @method static SupplierAddressApi supplierAddresses()
  * @method static array request(string $method, string $endpoint, array $options = [])
  * 
- * @see \Serkan\TrendyolSpApi\Trendyol
+ * @see \TrendyolApi\TrendyolSpApi\Trendyol
  */
 class Trendyol extends Facade
 {

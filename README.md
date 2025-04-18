@@ -7,7 +7,7 @@ Bu paket, Trendyol Marketplace API'si ile entegrasyon sağlamak için Laravel uy
 Paketi Composer aracılığıyla yükleyin:
 
 ```bash
-composer require serkan/trendyol-sp-api
+composer require trendyol/trendyol-sp-api
 ```
 
 Laravel 5.5 ve üstü için, paket otomatik olarak kaydedilecektir.
@@ -15,7 +15,7 @@ Laravel 5.5 ve üstü için, paket otomatik olarak kaydedilecektir.
 Yapılandırma dosyasını yayınlamak için:
 
 ```bash
-php artisan vendor:publish --provider="Serkan\TrendyolSpApi\Providers\TrendyolServiceProvider" --tag="config"
+php artisan vendor:publish --provider="TrendyolApi\TrendyolSpApi\Providers\TrendyolServiceProvider" --tag="config"
 ```
 
 ## Yapılandırma
@@ -37,7 +37,7 @@ TRENDYOL_DEBUG=false
 ### Facade Kullanımı
 
 ```php
-use Serkan\TrendyolSpApi\Facades\Trendyol;
+use TrendyolApi\TrendyolSpApi\Facades\Trendyol;
 
 // Ürünleri listeleme
 $products = Trendyol::products()->list(['page' => 0, 'size' => 50]);
@@ -65,7 +65,7 @@ $orders = trendyol()->orders()->list();
 ### Dependency Injection Kullanımı
 
 ```php
-use Serkan\TrendyolSpApi\Trendyol;
+use TrendyolApi\TrendyolSpApi\Trendyol;
 
 class ProductController extends Controller
 {
@@ -96,7 +96,7 @@ class ProductController extends Controller
 ## Hata Yönetimi
 
 ```php
-use Serkan\TrendyolSpApi\Exceptions\TrendyolApiException;
+use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
 
 try {
     $products = Trendyol::products()->list();

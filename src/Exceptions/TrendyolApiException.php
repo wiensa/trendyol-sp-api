@@ -1,6 +1,6 @@
 <?php
 
-namespace Serkan\TrendyolSpApi\Exceptions;
+namespace TrendyolApi\TrendyolSpApi\Exceptions;
 
 use Exception;
 

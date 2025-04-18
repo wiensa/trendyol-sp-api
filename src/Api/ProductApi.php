@@ -1,8 +1,8 @@
 <?php
 
-namespace Serkan\TrendyolSpApi\Api;
+namespace TrendyolApi\TrendyolSpApi\Api;
 
-use Serkan\TrendyolSpApi\Exceptions\TrendyolApiException;
+use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
 
 class ProductApi extends BaseApi
 {

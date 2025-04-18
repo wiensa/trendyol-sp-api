@@ -17,7 +17,7 @@ if (! function_exists('trendyol')) {
     /**
      * Trendyol API client'ına erişim sağlar.
      *
-     * @return \Serkan\TrendyolSpApi\Trendyol
+     * @return \TrendyolApi\TrendyolSpApi\Trendyol
      */
     function trendyol()
     {

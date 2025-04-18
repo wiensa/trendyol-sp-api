@@ -1,9 +1,9 @@
 <?php
 
-namespace Serkan\TrendyolSpApi\Providers;
+namespace TrendyolApi\TrendyolSpApi\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Serkan\TrendyolSpApi\Trendyol;
+use TrendyolApi\TrendyolSpApi\Trendyol;
 
 class TrendyolServiceProvider extends ServiceProvider
 {

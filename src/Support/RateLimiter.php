@@ -1,6 +1,6 @@
 <?php
 
-namespace Serkan\TrendyolSpApi\Support;
+namespace TrendyolApi\TrendyolSpApi\Support;
 
 /**
  * RateLimiter istekleri hız sınırını kontrol eder

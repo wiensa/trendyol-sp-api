@@ -1,6 +1,6 @@
 <?php
 
-namespace Serkan\TrendyolSpApi;
+namespace TrendyolApi\TrendyolSpApi;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Serkan\TrendyolSpApi\Api\ProductApi;
-use Serkan\TrendyolSpApi\Api\OrderApi;
-use Serkan\TrendyolSpApi\Api\CategoryApi;
-use Serkan\TrendyolSpApi\Api\BrandApi;
-use Serkan\TrendyolSpApi\Api\SupplierAddressApi;
-use Serkan\TrendyolSpApi\Exceptions\TrendyolApiException;
-use Serkan\TrendyolSpApi\Support\RateLimiter;
+use TrendyolApi\TrendyolSpApi\Api\ProductApi;
+use TrendyolApi\TrendyolSpApi\Api\OrderApi;
+use TrendyolApi\TrendyolSpApi\Api\CategoryApi;
+use TrendyolApi\TrendyolSpApi\Api\BrandApi;
+use TrendyolApi\TrendyolSpApi\Api\SupplierAddressApi;
+use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
+use TrendyolApi\TrendyolSpApi\Support\RateLimiter;
 
 class Trendyol
 {
