@@ -7,7 +7,7 @@ Bu paket, Trendyol Marketplace API'si ile entegrasyon sağlamak için Laravel uy
 Paketi Composer aracılığıyla yükleyin:
 
 ```bash
-composer require trendyol/trendyol-sp-api
+composer require wiensa/trendyol-sp-api
 ```
 
 Laravel 5.5 ve üstü için, paket otomatik olarak kaydedilecektir.

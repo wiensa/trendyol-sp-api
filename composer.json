@@ -1,5 +1,5 @@
 {
-    "name": "trendyol/trendyol-sp-api",
+    "name": "wiensa/trendyol-sp-api",
     "description": "Trendyol Marketplace API entegrasyonu için Laravel paketi",
     "keywords": [
         "laravel",
@@ -14,8 +14,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "TrendyolApi",
-            "email": "info@example.com"
+            "name": "Wiensa",
+            "email": "info@wiensa.com"
         }
     ],
     "autoload": {
