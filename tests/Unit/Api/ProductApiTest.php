@@ -8,7 +8,7 @@ use Illuminate\Config\Repository;
 use TrendyolApi\TrendyolSpApi\Api\ProductApi;
 use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
 
-test('ProductApi->list metodu doğru şekilde istek gönderir ve yanıt döndürür', function () {
+test('ProductApi->getProducts metodu doğru şekilde istek gönderir ve yanıt döndürür', function () {
     // Mock HTTP yanıtı
     $products_response = [
         'totalElements' => 2,
@@ -42,13 +42,13 @@ test('ProductApi->list metodu doğru şekilde istek gönderir ve yanıt döndür
     $product_api = new ProductApi($client, $config, $supplier_id);
 
     // Ürünleri listele
-    $response = $product_api->list(['page' => 0, 'size' => 25]);
+    $response = $product_api->getProducts(['page' => 0, 'size' => 25]);
     
     // Beklenen yanıtı kontrol et
     expect($response)->toBe($products_response);
 });
 
-test('ProductApi->get metodu belirli bir ürünü getirir', function () {
+test('ProductApi->getProductById metodu belirli bir ürünü getirir', function () {
     // Mock HTTP yanıtı
     $product_response = [
         'id' => 1,
@@ -75,13 +75,13 @@ test('ProductApi->get metodu belirli bir ürünü getirir', function () {
     $product_api = new ProductApi($client, $config, $supplier_id);
 
     // Ürün detayı getir
-    $response = $product_api->get(1);
+    $response = $product_api->getProductById(1);
     
     // Beklenen yanıtı kontrol et
     expect($response)->toBe($product_response);
 });
 
-test('ProductApi->create metodu yeni ürün oluşturur', function () {
+test('ProductApi->createProduct metodu yeni ürün oluşturur', function () {
     // Mock HTTP yanıtı
     $create_response = [
         'batchRequestId' => '12345',
@@ -115,7 +115,7 @@ test('ProductApi->create metodu yeni ürün oluşturur', function () {
     ];
 
     // Ürün oluştur
-    $response = $product_api->create($product_data);
+    $response = $product_api->createProduct($product_data);
     
     // Beklenen yanıtı kontrol et
     expect($response)->toBe($create_response);
@@ -154,7 +154,7 @@ test('ProductApi->updatePriceAndStock metodu ürün stok ve fiyat bilgisini gün
     expect($response)->toBe($update_response);
 });
 
-test('ProductApi->delete metodu ürün siler', function () {
+test('ProductApi->deleteProduct metodu ürün siler', function () {
     // Mock HTTP yanıtı
     $delete_response = [
         'batchRequestId' => '12345',
@@ -176,7 +176,7 @@ test('ProductApi->delete metodu ürün siler', function () {
     $product_api = new ProductApi($client, $config, $supplier_id);
 
     // Ürün sil
-    $response = $product_api->delete('8680000000001');
+    $response = $product_api->deleteProduct('8680000000001');
     
     // Beklenen yanıtı kontrol et
     expect($response)->toBe($delete_response);
@@ -206,6 +206,13 @@ test('ProductApi API hatası döndürdüğünde exception fırlatır', function 
     $product_api = new ProductApi($client, $config, $supplier_id);
 
     // TrendyolApiException bekle
-    expect(fn() => $product_api->create([]))
-        ->toThrow(TrendyolApiException::class, 'Invalid product data');
+    $exception = null;
+    try {
+        $product_api->createProduct([]);
+    } catch (TrendyolApiException $e) {
+        $exception = $e;
+    }
+    
+    expect($exception)->toBeInstanceOf(TrendyolApiException::class);
+    expect($exception->getMessage())->toContain('Invalid product data');
 }); 

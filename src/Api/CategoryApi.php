@@ -17,7 +17,7 @@ class CategoryApi extends BaseApi
      * @return array
      * @throws TrendyolApiException
      */
-    public function list(): array
+    public function getCategories(): array
     {
         return $this->request('GET', $this->endpoint_path);
     }
@@ -29,7 +29,7 @@ class CategoryApi extends BaseApi
      * @return array
      * @throws TrendyolApiException
      */
-    public function get(int $category_id): array
+    public function getCategoryById(int $category_id): array
     {
         $endpoint = $this->endpoint_path . '/' . $category_id;
         
@@ -43,7 +43,7 @@ class CategoryApi extends BaseApi
      * @return array
      * @throws TrendyolApiException
      */
-    public function getAttributes(int $category_id): array
+    public function getCategoryAttributes(int $category_id): array
     {
         $endpoint = $this->endpoint_path . '/' . $category_id . '/attributes';
         

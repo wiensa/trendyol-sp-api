@@ -11,24 +11,32 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TrendyolApi\TrendyolSpApi\Api\ProductApi;
-use TrendyolApi\TrendyolSpApi\Api\OrderApi;
-use TrendyolApi\TrendyolSpApi\Api\CategoryApi;
-use TrendyolApi\TrendyolSpApi\Api\BrandApi;
-use TrendyolApi\TrendyolSpApi\Api\SupplierAddressApi;
-use TrendyolApi\TrendyolSpApi\Api\ReturnApi;
-use TrendyolApi\TrendyolSpApi\Api\CustomerQuestionApi;
-use TrendyolApi\TrendyolSpApi\Api\ClaimApi;
-use TrendyolApi\TrendyolSpApi\Api\ShipmentProviderApi;
+use TrendyolApi\TrendyolSpApi\Services\ProductService;
+use TrendyolApi\TrendyolSpApi\Services\OrderService;
+use TrendyolApi\TrendyolSpApi\Services\CategoryService;
+use TrendyolApi\TrendyolSpApi\Services\ClaimService;
 use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
 use TrendyolApi\TrendyolSpApi\Support\RateLimiter;
+use TrendyolApi\TrendyolSpApi\Traits\ApiRequest;
+use TrendyolApi\TrendyolSpApi\Api\ReturnApi;
+use TrendyolApi\TrendyolSpApi\Api\CustomerQuestionApi;
+use TrendyolApi\TrendyolSpApi\Api\ShipmentProviderApi;
+use TrendyolApi\TrendyolSpApi\Api\BrandApi;
+use TrendyolApi\TrendyolSpApi\Api\SupplierAddressApi;
 
 class Trendyol
 {
+    use ApiRequest;
+    
     /**
      * HTTP istemcisi
      */
     protected Client $client;
+    
+    /**
+     * ApiRequest trait'i için HTTP istemcisi
+     */
+    protected Client $http_client;
 
     /**
      * Yapılandırma deposu
@@ -36,49 +44,49 @@ class Trendyol
     protected Repository $config;
 
     /**
-     * Ürün API'si
+     * Ürün servisi
      */
-    protected ?ProductApi $product_api = null;
+    protected ?ProductService $product_service = null;
 
     /**
-     * Sipariş API'si
+     * Sipariş servisi
      */
-    protected ?OrderApi $order_api = null;
+    protected ?OrderService $order_service = null;
 
     /**
-     * Kategori API'si
+     * Kategori servisi
      */
-    protected ?CategoryApi $category_api = null;
-
-    /**
-     * Marka API'si
-     */
-    protected ?BrandApi $brand_api = null;
-
-    /**
-     * Tedarikçi Adresi API'si
-     */
-    protected ?SupplierAddressApi $supplier_address_api = null;
+    protected ?CategoryService $category_service = null;
     
     /**
-     * İade API'si
+     * Talep/Şikayet servisi
+     */
+    protected ?ClaimService $claim_service = null;
+    
+    /**
+     * İade API sınıfı
      */
     protected ?ReturnApi $return_api = null;
     
     /**
-     * Müşteri Soruları API'si
+     * Müşteri Soruları API sınıfı
      */
     protected ?CustomerQuestionApi $customer_question_api = null;
     
     /**
-     * Talep/Şikayet API'si
-     */
-    protected ?ClaimApi $claim_api = null;
-    
-    /**
-     * Kargo/Sevkiyat API'si
+     * Kargo Firmaları API sınıfı
      */
     protected ?ShipmentProviderApi $shipment_provider_api = null;
+    
+    /**
+     * Marka API sınıfı
+     */
+    protected ?BrandApi $brand_api = null;
+    
+    /**
+     * Tedarikçi Adresleri API sınıfı
+     */
+    protected ?SupplierAddressApi $supplier_address_api = null;
 
     /**
      * Rate Limiter
@@ -170,78 +178,67 @@ class Trendyol
             'connect_timeout' => $this->config->get('trendyol.request.connect_timeout'),
             'http_errors' => false,
         ]);
+        
+        // ApiRequest trait'i için aynı istemciyi ata
+        $this->http_client = $this->client;
     }
 
     /**
-     * ProductApi örneğini döndürür.
+     * ProductService örneğini döndürür.
      *
-     * @return ProductApi
+     * @return ProductService
      */
-    public function products(): ProductApi
+    public function products(): ProductService
     {
-        if ($this->product_api === null) {
-            $this->product_api = new ProductApi($this->client, $this->config, $this->supplier_id);
+        if ($this->product_service === null) {
+            $this->product_service = new ProductService($this->client, $this->config, $this->supplier_id);
         }
         
-        return $this->product_api;
+        return $this->product_service;
     }
 
     /**
-     * OrderApi örneğini döndürür.
+     * OrderService örneğini döndürür.
      *
-     * @return OrderApi
+     * @return OrderService
      */
-    public function orders(): OrderApi
+    public function orders(): OrderService
     {
-        if ($this->order_api === null) {
-            $this->order_api = new OrderApi($this->client, $this->config, $this->supplier_id);
+        if ($this->order_service === null) {
+            $this->order_service = new OrderService($this->client, $this->config, $this->supplier_id);
         }
         
-        return $this->order_api;
+        return $this->order_service;
     }
 
     /**
-     * CategoryApi örneğini döndürür.
+     * CategoryService örneğini döndürür.
      *
-     * @return CategoryApi
+     * @return CategoryService
      */
-    public function categories(): CategoryApi
+    public function categories(): CategoryService
     {
-        if ($this->category_api === null) {
-            $this->category_api = new CategoryApi($this->client, $this->config, $this->supplier_id);
+        if ($this->category_service === null) {
+            $this->category_service = new CategoryService($this->client, $this->config, $this->supplier_id);
         }
         
-        return $this->category_api;
+        return $this->category_service;
     }
 
     /**
-     * BrandApi örneğini döndürür.
+     * ClaimService örneğini döndürür.
      *
-     * @return BrandApi
+     * @return ClaimService
      */
-    public function brands(): BrandApi
+    public function claims(): ClaimService
     {
-        if ($this->brand_api === null) {
-            $this->brand_api = new BrandApi($this->client, $this->config, $this->supplier_id);
+        if ($this->claim_service === null) {
+            $this->claim_service = new ClaimService($this->client, $this->config, $this->supplier_id);
         }
         
-        return $this->brand_api;
+        return $this->claim_service;
     }
-
-    /**
-     * SupplierAddressApi örneğini döndürür.
-     *
-     * @return SupplierAddressApi
-     */
-    public function supplierAddresses(): SupplierAddressApi
-    {
-        if ($this->supplier_address_api === null) {
-            $this->supplier_address_api = new SupplierAddressApi($this->client, $this->config, $this->supplier_id);
-        }
-        
-        return $this->supplier_address_api;
-    }
-
+    
     /**
      * ReturnApi örneğini döndürür.
      *
@@ -271,20 +268,6 @@ class Trendyol
     }
     
     /**
-     * ClaimApi örneğini döndürür.
-     *
-     * @return ClaimApi
-     */
-    public function claims(): ClaimApi
-    {
-        if ($this->claim_api === null) {
-            $this->claim_api = new ClaimApi($this->client, $this->config, $this->supplier_id);
-        }
-        
-        return $this->claim_api;
-    }
-    
-    /**
      * ShipmentProviderApi örneğini döndürür.
      *
      * @return ShipmentProviderApi
@@ -297,77 +280,52 @@ class Trendyol
         
         return $this->shipment_provider_api;
     }
-
+    
     /**
-     * API isteği gönderir.
+     * BrandApi örneğini döndürür.
      *
-     * @param string $method HTTP metodu
-     * @param string $endpoint API endpoint
-     * @param array $options Guzzle options
-     * @return array API yanıtı
-     * @throws TrendyolApiException Bir API hatası oluştuğunda
+     * @return BrandApi
      */
-    public function request(string $method, string $endpoint, array $options = []): array
+    public function brands(): BrandApi
     {
-        $cache_key = null;
-        
-        // Cache kontrolü sadece GET istekleri için yapılır
-        if ($method === 'GET' && $this->config->get('trendyol.cache.enabled')) {
-            $cache_key = $this->generateCacheKey($method, $endpoint, $options);
-            
-            if (Cache::has($cache_key)) {
-                return Cache::get($cache_key);
-            }
+        if ($this->brand_api === null) {
+            $this->brand_api = new BrandApi($this->client, $this->config, $this->supplier_id);
         }
         
-        try {
-            $response = $this->client->request($method, $endpoint, $options);
-            $status_code = $response->getStatusCode();
-            $body = $response->getBody()->getContents();
-            $data = json_decode($body, true);
-            
-            if ($status_code >= 400) {
-                throw new TrendyolApiException(
-                    $data['errors'][0]['message'] ?? 'API error',
-                    $status_code
-                );
-            }
-            
-            // GET isteği başarılıysa ve cache aktifse, sonucu cache'e kaydet
-            if ($method === 'GET' && $cache_key && $this->config->get('trendyol.cache.enabled')) {
-                Cache::put(
-                    $cache_key, 
-                    $data, 
-                    $this->config->get('trendyol.cache.ttl')
-                );
-            }
-            
-            return $data;
-        } catch (GuzzleException $e) {
-            throw new TrendyolApiException(
-                'HTTP request error: ' . $e->getMessage(),
-                $e->getCode()
-            );
+        return $this->brand_api;
+    }
+    
+    /**
+     * SupplierAddressApi örneğini döndürür.
+     *
+     * @return SupplierAddressApi
+     */
+    public function supplierAddresses(): SupplierAddressApi
+    {
+        if ($this->supplier_address_api === null) {
+            $this->supplier_address_api = new SupplierAddressApi($this->client, $this->config, $this->supplier_id);
         }
+        
+        return $this->supplier_address_api;
     }
 
     /**
-     * Cache key oluşturur.
+     * HTTP istemcisini döndürür.
      *
-     * @param string $method HTTP metodu
-     * @param string $endpoint API endpoint
-     * @param array $options Guzzle options
-     * @return string Cache key
+     * @return Client
      */
-    protected function generateCacheKey(string $method, string $endpoint, array $options): string
+    public function getHttpClient(): Client
     {
-        $prefix = $this->config->get('trendyol.cache.prefix');
-        $key_parts = [
-            $method,
-            $endpoint,
-            md5(json_encode($options))
-        ];
-        
-        return $prefix . implode('_', $key_parts);
+        return $this->client;
+    }
+    
+    /**
+     * Tedarikçi ID'sini döndürür.
+     *
+     * @return string
+     */
+    public function getSupplierId(): string
+    {
+        return $this->supplier_id;
     }
 } 

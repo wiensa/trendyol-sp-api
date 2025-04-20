@@ -8,7 +8,7 @@ use Illuminate\Config\Repository;
 use TrendyolApi\TrendyolSpApi\Api\OrderApi;
 use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
 
-test('OrderApi->list metodu doğru şekilde istek gönderir ve yanıt döndürür', function () {
+test('OrderApi->getOrders metodu doğru şekilde istek gönderir ve yanıt döndürür', function () {
     // Mock HTTP yanıtı
     $orders_response = [
         'totalElements' => 2,
@@ -46,13 +46,13 @@ test('OrderApi->list metodu doğru şekilde istek gönderir ve yanıt döndürü
     $order_api = new OrderApi($client, $config, $supplier_id);
 
     // Siparişleri listele
-    $response = $order_api->list(['startDate' => '2023-01-01', 'endDate' => '2023-01-03', 'status' => 'Created']);
+    $response = $order_api->getOrders(['startDate' => '2023-01-01', 'endDate' => '2023-01-03', 'status' => 'Created']);
     
     // Beklenen yanıtı kontrol et
     expect($response)->toBe($orders_response);
 });
 
-test('OrderApi->get metodu belirli bir siparişi getirir', function () {
+test('OrderApi->getOrderDetail metodu belirli bir siparişi getirir', function () {
     // Mock HTTP yanıtı
     $order_response = [
         'id' => 1,
@@ -94,13 +94,13 @@ test('OrderApi->get metodu belirli bir siparişi getirir', function () {
     $order_api = new OrderApi($client, $config, $supplier_id);
 
     // Sipariş detayı getir
-    $response = $order_api->get(1);
+    $response = $order_api->getOrderDetail(1);
     
     // Beklenen yanıtı kontrol et
     expect($response)->toBe($order_response);
 });
 
-test('OrderApi->updatePackageStatus metodu sipariş durumunu günceller', function () {
+test('OrderApi->acceptOrderItems metodu sipariş durumunu günceller', function () {
     // Mock HTTP yanıtı
     $update_response = [
         'status' => 'success',
@@ -131,13 +131,13 @@ test('OrderApi->updatePackageStatus metodu sipariş durumunu günceller', functi
     ];
 
     // Sipariş durumunu güncelle
-    $response = $order_api->updatePackageStatus(12345, $lines);
+    $response = $order_api->acceptOrderItems(12345, $lines);
     
     // Beklenen yanıtı kontrol et
     expect($response)->toBe($update_response);
 });
 
-test('OrderApi->cancelPackage metodu sipariş paketini iptal eder', function () {
+test('OrderApi->cancelOrder metodu sipariş paketini iptal eder', function () {
     // Mock HTTP yanıtı
     $cancel_response = [
         'status' => 'success',
@@ -158,7 +158,7 @@ test('OrderApi->cancelPackage metodu sipariş paketini iptal eder', function () 
     $order_api = new OrderApi($client, $config, $supplier_id);
 
     // Sipariş paketini iptal et
-    $response = $order_api->cancelPackage(12345, 'Müşteri talebi üzerine iptal edildi');
+    $response = $order_api->cancelOrder(12345, 'Müşteri talebi üzerine iptal edildi');
     
     // Beklenen yanıtı kontrol et
     expect($response)->toBe($cancel_response);

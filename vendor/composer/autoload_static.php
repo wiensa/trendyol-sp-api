@@ -49,7 +49,7 @@ class ComposerStaticInit4ef7ac4eaea9618a39193dfe238f22dc
         'f83ed111c2f97a0449abf067f157f418' => __DIR__ . '/..' . '/pestphp/pest/src/Functions.php',
         '7d2876738dc0328edeb8a103c76cd8e7' => __DIR__ . '/..' . '/pestphp/pest/src/Pest.php',
         '38143a9afc50997d55e4815db8489d1c' => __DIR__ . '/..' . '/rector/rector/bootstrap.php',
-        'ca1ee1aa2bb3346b37fb0d60633e28b8' => __DIR__ . '/../..' . '/helpers.php',
+        '804e3781f061be629bccde82bb546109' => __DIR__ . '/../..' . '/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -68,6 +68,8 @@ class ComposerStaticInit4ef7ac4eaea9618a39193dfe238f22dc
         ),
         'T' => 
         array (
+            'TrendyolApi\\TrendyolSpApi\\Tests\\' => 32,
+            'TrendyolApi\\TrendyolSpApi\\' => 26,
             'TijsVerkoyen\\CssToInlineStyles\\' => 31,
             'Termwind\\' => 9,
         ),
@@ -209,8 +211,6 @@ class ComposerStaticInit4ef7ac4eaea9618a39193dfe238f22dc
         'A' => 
         array (
             'App\\' => 4,
-            'AlgoYounes\\Skeleton\\Tests\\' => 26,
-            'AlgoYounes\\Skeleton\\' => 20,
         ),
     );
 
@@ -232,6 +232,14 @@ class ComposerStaticInit4ef7ac4eaea9618a39193dfe238f22dc
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'TrendyolApi\\TrendyolSpApi\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/tests',
+        ),
+        'TrendyolApi\\TrendyolSpApi\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -608,14 +616,6 @@ class ComposerStaticInit4ef7ac4eaea9618a39193dfe238f22dc
         'App\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/pint/app',
-        ),
-        'AlgoYounes\\Skeleton\\Tests\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/tests',
-        ),
-        'AlgoYounes\\Skeleton\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 

@@ -11,6 +11,15 @@ use TrendyolApi\TrendyolSpApi\Api\OrderApi;
 use TrendyolApi\TrendyolSpApi\Api\CategoryApi;
 use TrendyolApi\TrendyolSpApi\Api\BrandApi;
 use TrendyolApi\TrendyolSpApi\Api\SupplierAddressApi;
+use TrendyolApi\TrendyolSpApi\Api\ClaimApi;
+use TrendyolApi\TrendyolSpApi\Api\ReturnApi;
+use TrendyolApi\TrendyolSpApi\Api\CustomerQuestionApi;
+use TrendyolApi\TrendyolSpApi\Api\ShipmentProviderApi;
+use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
+use TrendyolApi\TrendyolSpApi\Services\ProductService;
+use TrendyolApi\TrendyolSpApi\Services\OrderService;
+use TrendyolApi\TrendyolSpApi\Services\CategoryService;
+use TrendyolApi\TrendyolSpApi\Services\ClaimService;
 
 test('Trendyol sınıfı API nesnelerini doğru şekilde oluşturur', function () {
     // Test konfigürasyonu
@@ -38,11 +47,15 @@ test('Trendyol sınıfı API nesnelerini doğru şekilde oluşturur', function (
     $trendyol = new Trendyol($config);
 
     // API nesnelerinin doğru sınıflardan oluşturulduğunu kontrol et
-    expect($trendyol->products())->toBeInstanceOf(ProductApi::class);
-    expect($trendyol->orders())->toBeInstanceOf(OrderApi::class);
-    expect($trendyol->categories())->toBeInstanceOf(CategoryApi::class);
+    expect($trendyol->products())->toBeInstanceOf(ProductService::class);
+    expect($trendyol->orders())->toBeInstanceOf(OrderService::class);
+    expect($trendyol->categories())->toBeInstanceOf(CategoryService::class);
     expect($trendyol->brands())->toBeInstanceOf(BrandApi::class);
     expect($trendyol->supplierAddresses())->toBeInstanceOf(SupplierAddressApi::class);
+    expect($trendyol->claims())->toBeInstanceOf(ClaimService::class);
+    expect($trendyol->returns())->toBeInstanceOf(ReturnApi::class);
+    expect($trendyol->customerQuestions())->toBeInstanceOf(CustomerQuestionApi::class);
+    expect($trendyol->shipmentProviders())->toBeInstanceOf(ShipmentProviderApi::class);
 });
 
 test('Trendyol sınıfı API isteği gönderirken doğru yanıt döndürür', function () {
@@ -82,6 +95,11 @@ test('Trendyol sınıfı API isteği gönderirken doğru yanıt döndürür', fu
     $property = $reflection->getProperty('client');
     $property->setAccessible(true);
     $property->setValue($trendyol, $client);
+    
+    // http_client özelliğini de değiştir
+    $http_client_property = $reflection->getProperty('http_client');
+    $http_client_property->setAccessible(true);
+    $http_client_property->setValue($trendyol, $client);
 
     // İstek gönder ve yanıtı kontrol et
     $response = $trendyol->request('GET', '/test-endpoint');
@@ -133,8 +151,20 @@ test('Trendyol sınıfı API hatası döndürdüğünde exception fırlatır', f
     $property = $reflection->getProperty('client');
     $property->setAccessible(true);
     $property->setValue($trendyol, $client);
+    
+    // http_client özelliğini de değiştir
+    $http_client_property = $reflection->getProperty('http_client');
+    $http_client_property->setAccessible(true);
+    $http_client_property->setValue($trendyol, $client);
 
     // TrendyolApiException bekle
-    expect(fn() => $trendyol->request('GET', '/test-endpoint'))
-        ->toThrow(TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException::class, 'Test validation error');
+    $exception = null;
+    try {
+        $trendyol->request('GET', '/test-endpoint');
+    } catch (TrendyolApiException $e) {
+        $exception = $e;
+    }
+    
+    expect($exception)->toBeInstanceOf(TrendyolApiException::class);
+    expect($exception->getMessage())->toContain('Test validation error');
 }); 

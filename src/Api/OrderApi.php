@@ -18,7 +18,7 @@ class OrderApi extends BaseApi
      * @return array
      * @throws TrendyolApiException
      */
-    public function list(array $filter = []): array
+    public function getOrders(array $filter = []): array
     {
         $endpoint = sprintf($this->endpoint_path, $this->supplier_id);
         $query_params = $this->prepareQueryParams($filter);
@@ -33,7 +33,7 @@ class OrderApi extends BaseApi
      * @return array
      * @throws TrendyolApiException
      */
-    public function get(int $order_id): array
+    public function getOrderDetail(int $order_id): array
     {
         $endpoint = sprintf('/suppliers/%s/orders/%s', $this->supplier_id, $order_id);
         
@@ -62,7 +62,7 @@ class OrderApi extends BaseApi
      * @return array
      * @throws TrendyolApiException
      */
-    public function updatePackageStatus(int $shipment_package_id, array $lines): array
+    public function acceptOrderItems(int $shipment_package_id, array $lines): array
     {
         $endpoint = sprintf('/suppliers/%s/orders/shipment-packages/%s', $this->supplier_id, $shipment_package_id);
 
@@ -82,7 +82,7 @@ class OrderApi extends BaseApi
      * @return array
      * @throws TrendyolApiException
      */
-    public function cancelPackage(int $shipment_package_id, string $reason): array
+    public function cancelOrder(int $shipment_package_id, string $reason): array
     {
         $endpoint = sprintf('/suppliers/%s/orders/shipment-packages/%s', $this->supplier_id, $shipment_package_id);
         

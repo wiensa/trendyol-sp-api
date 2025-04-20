@@ -10,6 +10,8 @@ return array(
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src', $vendorDir . '/phpdocumentor/reflection-common/src'),
     'Whoops\\' => array($vendorDir . '/filp/whoops/src/Whoops'),
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
+    'TrendyolApi\\TrendyolSpApi\\Tests\\' => array($baseDir . '/tests'),
+    'TrendyolApi\\TrendyolSpApi\\' => array($baseDir . '/src'),
     'TijsVerkoyen\\CssToInlineStyles\\' => array($vendorDir . '/tijsverkoyen/css-to-inline-styles/src'),
     'Termwind\\' => array($vendorDir . '/nunomaduro/termwind/src'),
     'Symfony\\Polyfill\\Uuid\\' => array($vendorDir . '/symfony/polyfill-uuid'),
@@ -103,6 +105,4 @@ return array(
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'App\\' => array($vendorDir . '/laravel/pint/app'),
-    'AlgoYounes\\Skeleton\\Tests\\' => array($baseDir . '/tests'),
-    'AlgoYounes\\Skeleton\\' => array($baseDir . '/src'),
 );

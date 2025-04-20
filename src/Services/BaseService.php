@@ -1,17 +1,21 @@
 <?php
 
-namespace TrendyolApi\TrendyolSpApi\Api;
+namespace TrendyolApi\TrendyolSpApi\Services;
 
 use GuzzleHttp\Client;
 use Illuminate\Config\Repository;
+use TrendyolApi\TrendyolSpApi\Traits\ApiRequest;
+use TrendyolApi\TrendyolSpApi\Traits\ResponseFormatter;
 use TrendyolApi\TrendyolSpApi\Exceptions\TrendyolApiException;
 
-abstract class BaseApi
+abstract class BaseService
 {
+    use ApiRequest, ResponseFormatter;
+
     /**
      * HTTP istemcisi
      */
-    protected Client $client;
+    protected Client $http_client;
 
     /**
      * Yapılandırma deposu
@@ -24,12 +28,12 @@ abstract class BaseApi
     protected string $supplier_id;
 
     /**
-     * API endpoint'inin yolu
+     * Servis adı
      */
-    protected string $endpoint_path;
+    protected string $service_name;
 
     /**
-     * BaseApi yapıcı.
+     * BaseService yapıcı.
      *
      * @param Client $client HTTP istemcisi
      * @param Repository $config Yapılandırma deposu
@@ -37,46 +41,14 @@ abstract class BaseApi
      */
     public function __construct(Client $client, Repository $config, string $supplier_id)
     {
-        $this->client = $client;
+        $this->http_client = $client;
         $this->config = $config;
         $this->supplier_id = $supplier_id;
+        $this->service_name = static::class;
     }
 
     /**
-     * API isteği gönderir.
-     *
-     * @param string $method HTTP metodu
-     * @param string $endpoint API endpoint
-     * @param array $options Guzzle options
-     * @return array API yanıtı
-     * @throws TrendyolApiException Bir API hatası oluştuğunda
-     */
-    public function request(string $method, string $endpoint, array $options = []): array
-    {
-        try {
-            $response = $this->client->request($method, $endpoint, $options);
-            $status_code = $response->getStatusCode();
-            $body = $response->getBody()->getContents();
-            $data = json_decode($body, true);
-            
-            if ($status_code >= 400) {
-                throw new TrendyolApiException(
-                    $data['errors'][0]['message'] ?? 'API error',
-                    $status_code
-                );
-            }
-            
-            return $data;
-        } catch (\Exception $e) {
-            throw new TrendyolApiException(
-                'API request error: ' . $e->getMessage(),
-                $e->getCode() ?: 500
-            );
-        }
-    }
-
-    /**
-     * Query parametreleri için filtre parametrelerini hazırlar.
+     * Sorgu parametreleri için filtre parametrelerini hazırlar.
      *
      * @param array $filter Filtreler
      * @return array API istekleri için sorgu parametreleri
